@@ -14,6 +14,7 @@ import {
   Grid,
 } from '@mui/material';
 import Search from '../components/Search';
+import { Link } from 'react-router-dom';
 
 
 function Books() {
@@ -69,6 +70,8 @@ function Books() {
                     minWidth: 200,
                   }}
                   key={book.name}
+                  to={"/book/" + book.id}
+                  component={Link}
                 >
                   <CardMedia
                     sx={{ height: 250 }}

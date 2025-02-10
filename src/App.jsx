@@ -27,6 +27,7 @@ function App() {
         { path: '/', element: <Books /> },
         { path: '/book', element: <Book /> },
         { path: '/addnew', element: <AddBook /> },
+        { path: '/book/:id', element: <Book/> }
       ],
     },
   ]);
