@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
@@ -14,8 +14,9 @@ import { bookGenres } from '../genres';
 import { Stack, Typography } from '@mui/material';
 
 function AddBook() {
-  const { alert, post } = useAxios('http://localhost:3001');
+  const { alert, post } = useAxios('http://localhost:3000');
   const [rateValue, setRateValue] = useState(3);
+  const [open, setOpen] = useState(false);
   const [book, setBook] = useState({
     author: '',
     name: '',
@@ -25,6 +26,15 @@ function AddBook() {
     end: null,
     stars: null,
   });
+
+  useEffect(() => {
+    if (alert) {
+      setOpen(true);
+      setTimeout(() => {
+        setOpen(false);
+      }, 5000);
+    }
+  },[alert])
 
   const genreChangeHandler = (event) => {
     const { value } = event.target;
@@ -51,7 +61,8 @@ function AddBook() {
     }
   };
 
-  function postHandler() {
+  function postHandler(e) {
+    e.preventDefault();
     post('books', book);
   }
 
@@ -62,7 +73,7 @@ function AddBook() {
         alignItems="stretch"
         sx={{ my: 2, mx: 'auto', width: '25%' }}
       >
-        {alert.show && <Alert severity={alert.type}>{alert.message}</Alert>}
+        {alert.show && open && <Alert severity={alert.type}>{alert.message}</Alert>}
         <Typography variant="h4" component="h2" sx={{ my: 10 }}>
           Add a book
         </Typography>
@@ -119,7 +130,7 @@ function AddBook() {
                 setRateValue(newValue);
               }}
             />
-            </div>
+          </div>
           
         </Stack>
         <Button variant="contained" type="submit">
