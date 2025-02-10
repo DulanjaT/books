@@ -11,12 +11,12 @@ const Search = ({updateBooks}) => {
   );
 
   useEffect(() => {
-    console.log(data)
-    console.log(searchBy)
-    console.log(searchTerm)
-    const filteredBooks = data?.filter((book) => {return book[searchBy].toString().includes(searchTerm)});
-    console.log(filteredBooks)
-    if(filteredBooks) updateBooks(filteredBooks);
+    if (searchTerm !== '') {
+        const filteredBooks = data?.filter((book) => {return book[searchBy].toString().includes(searchTerm)});
+        if(filteredBooks) updateBooks(filteredBooks);
+    } else {
+        updateBooks(data);
+    }
   }, [data]);
 
   const handleSearchByChange = (event) => {
@@ -41,6 +41,12 @@ const Search = ({updateBooks}) => {
                 fullWidth
                 value={searchTerm}
                 onChange={handleSearchTermChange}
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                        searchTerm('')
+                        handleSearch();
+                    }
+                }}
             />
         </Grid>
         <Grid item xs={12} sm={4}>
