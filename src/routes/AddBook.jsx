@@ -109,15 +109,18 @@ function AddBook() {
         <DateField name="start" label="Started" />
         <DateField name="end" label="Finished" disabled={!book.completed} />
         <Stack spacing={1}>
-          <Rating
-            name="stars"
-            value={rateValue}
-            onClick={rateChangeHandler}
-            size="large"
-            onChange={(event, newValue) => {
-              setRateValue(newValue);
-            }}
-          />
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Rating
+              name="stars"
+              value={rateValue}
+              onClick={rateChangeHandler}
+              size="large"
+              onChange={(event, newValue) => {
+                setRateValue(newValue);
+              }}
+            />
+            </div>
+          
         </Stack>
         <Button variant="contained" type="submit">
           Add new
