@@ -68,6 +68,19 @@
       "stars": "5",
       "id": 5,
       "img": "https://www.davidjpphillips.com/wp-content/uploads/2023/08/highonlife_copy-195x300.jpg"
+    },
+    {
+      "author": "Enid Blyton",
+      "name": "Famous Five",
+      "genres": [
+        "Adventure"
+      ],
+      "completed": true,
+      "start": null,
+      "img": "https://i.postimg.cc/FKTmS57v/kourosh-qaffari-Rrhhzit-Yizg-unsplash.jpg",
+      "end": null,
+      "stars": "4",
+      "id": 6
     }
   ]
 }
