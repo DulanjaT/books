@@ -23,6 +23,7 @@ function AddBook() {
     genres: [],
     completed: false,
     start: null,
+    img: 'https://i.postimg.cc/FKTmS57v/kourosh-qaffari-Rrhhzit-Yizg-unsplash.jpg',
     end: null,
     stars: null,
   });
