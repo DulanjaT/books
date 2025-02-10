@@ -11,7 +11,10 @@ import {
   Rating,
   Chip,
   Typography,
+  Grid,
 } from '@mui/material';
+import Search from '../components/Search';
+
 
 function Books() {
   const [books, setBooks] = useState([]);
@@ -23,78 +26,91 @@ function Books() {
 
 
   useEffect(() => {
-    if (books.length === 0) {
+    if (books?.length === 0) {
       getBooks();
     }
   }, []);
 
-  // TODO: Replace axios with useAxios hook
+  useEffect(() => {
+    if(data != undefined)
+      setBooks(data);
+  }, [data]);
+
   async function getBooks() {
     get('books');
   }
 
-  // TODO: Implement search functionality
   return (
     <Box sx={{ mx: 'auto', p: 2 }}>
       {loading && <CircularProgress />}
       {!loading && (
         <div>
-          <Stack
-            sx={{ justifyContent: 'space-around' }}
-            spacing={{ xs: 1 }}
-            direction="row"
-            useFlexGap
-            flexWrap="wrap"
-          >
-            {data?.map((book) => (
-              <Card
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  width: '15%',
-                  minWidth: 200,
-                }}
-                key={book.name}
-              >
-                <CardMedia
-                  sx={{ height: 250 }}
-                  image={book.img}
-                  title={book.name}
-                />
-                <Box sx={{ pt: 2, pl: 2 }}>
-                  {book.genres.map((genre, i) => (
-                    <Chip
-                      key={i}
-                      label={genre}
-                      variant="outlined"
+          <Grid container spacing={2}>  
+            <Grid item xs={12} sm={12} justifyContent={'center'}>
+              <Search updateBooks={(books) => {
+                if(data != undefined)
+                  setBooks(books);
+              }}/>
+            </Grid>
+            <Grid item xs={12} sm={12} justifyContent={'center'}>
+            <Stack
+              sx={{ justifyContent: 'space-around' }}
+              spacing={{ xs: 1 }}
+              direction="row"
+              useFlexGap
+              flexWrap="wrap"
+            >
+              {books?.map((book) => (
+                <Card
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    width: '15%',
+                    minWidth: 200,
+                  }}
+                  key={book.name}
+                >
+                  <CardMedia
+                    sx={{ height: 250 }}
+                    image={book.img}
+                    title={book.name}
+                  />
+                  <Box sx={{ pt: 2, pl: 2 }}>
+                    {book.genres.map((genre, i) => (
+                      <Chip
+                        key={i}
+                        label={genre}
+                        variant="outlined"
+                        size="small"
+                      />
+                    ))}
+                    <Typography variant="h6" component="h2" sx={{ mt: 2 }}>
+                      {book.name}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                      {book.author}
+                    </Typography>
+                  </Box>
+                  <CardActions
+                    sx={{
+                      justifyContent: 'space-between',
+                      mt: 'auto',
+                      pl: 2,
+                    }}
+                  >
+                    <Rating
+                      name="read-only"
+                      value={book.stars}
+                      readOnly
                       size="small"
                     />
-                  ))}
-                  <Typography variant="h6" component="h2" sx={{ mt: 2 }}>
-                    {book.name}
-                  </Typography>
-                  <Typography variant="subtitle1" gutterBottom>
-                    {book.author}
-                  </Typography>
-                </Box>
-                <CardActions
-                  sx={{
-                    justifyContent: 'space-between',
-                    mt: 'auto',
-                    pl: 2,
-                  }}
-                >
-                  <Rating
-                    name="read-only"
-                    value={book.stars}
-                    readOnly
-                    size="small"
-                  />
-                  <Button size="small">Learn More</Button>
-                </CardActions>
-              </Card>
-            ))}
-          </Stack>
+                    <Button size="small">Learn More</Button>
+                  </CardActions>
+                </Card>
+              ))}
+            </Stack>
+            </Grid>
+          </Grid>
         </div>
       )}
     </Box>
