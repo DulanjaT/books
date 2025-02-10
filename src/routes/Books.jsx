@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import useAxios from '../services/useAxios';
 import {
   Box,
   Card,
@@ -17,6 +17,11 @@ function Books() {
   const [books, setBooks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  const { data, alert, loading, get, post, update, remove } = useAxios(
+    'http://localhost:3000'
+  );
+
+
   useEffect(() => {
     if (books.length === 0) {
       getBooks();
@@ -25,20 +30,14 @@ function Books() {
 
   // TODO: Replace axios with useAxios hook
   async function getBooks() {
-    try {
-      const response = await axios.get('http://localhost:3000/books');
-      setBooks(response.data);
-      setIsLoading(false);
-    } catch (error) {
-      console.error(error);
-    }
+    get('books');
   }
 
   // TODO: Implement search functionality
   return (
     <Box sx={{ mx: 'auto', p: 2 }}>
-      {isLoading && <CircularProgress />}
-      {!isLoading && (
+      {loading && <CircularProgress />}
+      {!loading && (
         <div>
           <Stack
             sx={{ justifyContent: 'space-around' }}
@@ -47,7 +46,7 @@ function Books() {
             useFlexGap
             flexWrap="wrap"
           >
-            {books.map((book) => (
+            {data?.map((book) => (
               <Card
                 sx={{
                   display: 'flex',
