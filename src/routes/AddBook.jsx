@@ -1,50 +1,63 @@
-import { useState, useEffect } from 'react';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Rating from '@mui/material/Rating';
-import Button from '@mui/material/Button';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import Alert from '@mui/material/Alert';
-import { DateField } from '@mui/x-date-pickers/DateField';
-import useAxios from '../services/useAxios';
-import { bookGenres } from '../genres';
-import { Stack, Typography } from '@mui/material';
+import { useState, useEffect } from "react";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Rating from "@mui/material/Rating";
+import Button from "@mui/material/Button";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import Alert from "@mui/material/Alert";
+import { DateField } from "@mui/x-date-pickers/DateField";
+import useAxios from "../services/useAxios";
+import { bookGenres } from "../genres";
+import { Stack, Typography } from "@mui/material";
 
+/**
+ * The `AddBook` component allows users to add a new book by entering details like title, author, genres, completion status, and rating.
+ * It sends the book data to the server using the `post` function.
+ */
 function AddBook() {
-  const { alert, post } = useAxios('http://localhost:3000');
+  const { alert, post } = useAxios("http://localhost:3000");
   const [rateValue, setRateValue] = useState(3);
   const [open, setOpen] = useState(false);
   const [book, setBook] = useState({
-    author: '',
-    name: '',
+    author: "",
+    name: "",
     genres: [],
     completed: false,
     start: null,
-    img: 'https://i.postimg.cc/FKTmS57v/kourosh-qaffari-Rrhhzit-Yizg-unsplash.jpg',
+    img: "https://i.postimg.cc/FKTmS57v/kourosh-qaffari-Rrhhzit-Yizg-unsplash.jpg",
     end: null,
     stars: null,
   });
 
   useEffect(() => {
+    /**
+     * Displays an alert when there is a server response and hides it after 5 seconds.
+     */
     if (alert) {
       setOpen(true);
       setTimeout(() => {
         setOpen(false);
       }, 5000);
     }
-  },[alert])
+  }, [alert]);
 
+  /**
+   * Handles changes to the selected genres for the book.
+   */
   const genreChangeHandler = (event) => {
     const { value } = event.target;
     setBook({
       ...book,
-      genres: typeof value === 'string' ? value.split(',') : value,
+      genres: typeof value === "string" ? value.split(",") : value,
     });
   };
 
+  /**
+   * Handles changes to the book's star rating.
+   */
   const rateChangeHandler = (event) => {
     const { value } = event.target;
     setBook({
@@ -53,18 +66,24 @@ function AddBook() {
     });
   };
 
+  /**
+   * Handles changes to book details such as title, author, image URL, and completion status.
+   */
   const addBookHandler = (e) => {
     const { name, value, checked, type } = e.target;
-    if (type === 'checkbox' && name === 'completed') {
+    if (type === "checkbox" && name === "completed") {
       setBook({ ...book, [name]: checked });
     } else {
       setBook({ ...book, [name]: value });
     }
   };
 
+  /**
+   * Sends the book data to the server when the form is submitted.
+   */
   function postHandler(e) {
     e.preventDefault();
-    post('books', book);
+    post("books", book);
   }
 
   return (
@@ -72,9 +91,11 @@ function AddBook() {
       <Stack
         spacing={1}
         alignItems="stretch"
-        sx={{ my: 2, mx: 'auto', width: '25%' }}
+        sx={{ my: 2, mx: "auto", width: "25%" }}
       >
-        {alert.show && open && <Alert severity={alert.type}>{alert.message}</Alert>}
+        {alert.show && open && (
+          <Alert severity={alert.type}>{alert.message}</Alert>
+        )}
         <Typography variant="h4" component="h2" sx={{ my: 10 }}>
           Add a book
         </Typography>
@@ -121,7 +142,7 @@ function AddBook() {
         <DateField name="start" label="Started" />
         <DateField name="end" label="Finished" disabled={!book.completed} />
         <Stack spacing={1}>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ display: "flex", alignItems: "center" }}>
             <Rating
               name="stars"
               value={rateValue}
@@ -132,7 +153,6 @@ function AddBook() {
               }}
             />
           </div>
-          
         </Stack>
         <Button variant="contained" type="submit">
           Add new
